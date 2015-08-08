@@ -4,10 +4,11 @@ if [[ -z $DB_PORT_7000_TCP_ADDR ]]; then
   exit 1
 fi
 
-SERVICE_NAME="zipkin-collector-service"
-CONFIG="${SERVICE_NAME}/config/collector-cassandra.scala"
+cd zipkin
+
+SERVICE_NAME="zipkin-query-service"
+CONFIG="/zipkin/config/query-cassandra.scala"
 
 echo "** Starting ${SERVICE_NAME}..."
-cd zipkin
 sed -i "s/localhost/${DB_PORT_7000_TCP_ADDR}/" $CONFIG
-./$SERVICE_NAME/build/install/$SERVICE_NAME/bin/$SERVICE_NAME -f $CONFIG
+java -jar /zipkin/$SERVICE_NAME.jar -f $CONFIG
